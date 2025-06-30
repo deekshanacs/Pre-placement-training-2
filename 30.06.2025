@@ -1,0 +1,80 @@
+1.
+def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@repeat(3)
+def greet():
+    print("Hello")
+
+ 2.
+class Meta(type):
+    def __new__(cls, name, bases, dct):
+        dct['created_by'] = 'MetaClass'
+        return super().__new__(cls, name, bases, dct)
+
+class Test(metaclass=Meta):
+    pass
+
+ 3.
+class FileOp:
+    def __init__(self, filename):
+        self.filename = filename
+    def __enter__(self):
+        self.file = open(self.filename, 'w')
+        return self.file
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.file.close()
+
+ 4.
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n-1) + fib(n-2)
+
+ 5.
+
+async def main():
+    print("Start")
+    await asyncio.sleep(1)
+    print("End")
+
+ 6.
+squares = [(lambda x: x**2)(x) for x in range(10)]
+
+ 7. 
+def flatten(lst):
+    for i in lst:
+        if isinstance(i, list):
+            yield from flatten(i)
+        else:
+            yield i
+
+ 8.
+def gen1():
+    yield from range(3)
+
+def gen2():
+    yield from (x*10 for x in gen1())
+
+9. 
+def class_factory(name):
+    return type(name, (object,), {"msg": lambda self: f"{name} says hi"})
+
+NewClass = class_factory("Alpha")
+
+10.
+class Vector:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+    def __str__(self):
+        return f"({self.x}, {self.y})"
